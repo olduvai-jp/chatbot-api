@@ -50,3 +50,18 @@ async def chatgpt_message(body: list[Message]):
     reply = chatgpt.chat(inputs)
 
     return Message(role=ChatGPTRole.assistant, message=reply)
+
+@router.post("/chatgpt/gpt4")
+async def chatgpt_message(body: list[Message]):
+    print(body)
+    chatgpt = ChatGPT(token=OPENAI_API_KEY, model="gpt-4")
+
+    messages = []
+
+    for message in body:
+        messages.append(chatgpt.create_message(role=message.role, content=message.message))
+
+    inputs = ChatGPTInput(messages)
+    reply = chatgpt.chat(inputs)
+
+    return Message(role=ChatGPTRole.assistant, message=reply)
